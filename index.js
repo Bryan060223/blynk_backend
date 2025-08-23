@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;  // ✅ use Railway's port
 
 // Use Railway environment variable instead of hardcoding the token
 const BLYNK_TOKEN = process.env.BLYNK_TOKEN;
+console.log("Loaded token:", BLYNK_TOKEN); // debug line
 
 // Middleware
 app.use(express.json());
