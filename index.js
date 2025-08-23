@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;  // ✅ use Railway's port
 
 // Use Railway environment variable instead of hardcoding the token
-const BLYNK_TOKEN = N74i5gD0fU6uqOOrKHRnIRxES0LsIeWr;
+const BLYNK_TOKEN = "N74i5gD0fU6uqOOrKHRnIRxES0LsIeWr";
 
 // Middleware
 app.use(express.json());
