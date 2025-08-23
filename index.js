@@ -2,12 +2,12 @@ import express from "express";
 import axios from "axios";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;  // ✅ use Railway's port
 
-// Replace with your actual Blynk Auth Token
-const BLYNK_TOKEN = "N74i5gD0fU6uqOOrKHRnIRxES0LsIeWr";
+// Use Railway environment variable instead of hardcoding the token
+const BLYNK_TOKEN = process.env.BLYNK_TOKEN;
 
-// Middleware to parse JSON (important for POST requests later)
+// Middleware
 app.use(express.json());
 
 // Root
@@ -20,7 +20,7 @@ app.get("/status", (req, res) => {
   res.json({ status: "ok", message: "Server connected successfully" });
 });
 
-// ✅ Get data from Blynk (example: Virtual Pin V1)
+// ✅ Get data from Blynk
 app.get("/blynk/get/:pin", async (req, res) => {
   const pin = req.params.pin;
   try {
@@ -33,7 +33,7 @@ app.get("/blynk/get/:pin", async (req, res) => {
   }
 });
 
-// ✅ Set data in Blynk (example: write to Virtual Pin)
+// ✅ Set data in Blynk
 app.post("/blynk/set/:pin", async (req, res) => {
   const pin = req.params.pin;
   const { value } = req.body;
@@ -51,4 +51,3 @@ app.post("/blynk/set/:pin", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
-
