@@ -29,9 +29,14 @@ app.get("/blynk/get/:pin", async (req, res) => {
     );
     res.json({ pin: `V${pin}`, value: response.data });
   } catch (error) {
-    res.status(500).json({ error: "Failed to get data from Blynk" });
+    console.error("Blynk API Error:", error.response?.data || error.message);
+    res.status(500).json({ 
+      error: "Failed to get data from Blynk",
+      details: error.response?.data || error.message 
+    });
   }
 });
+
 
 // ✅ Set data in Blynk
 app.post("/blynk/set/:pin", async (req, res) => {
