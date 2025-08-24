@@ -22,21 +22,19 @@ app.get("/status", (req, res) => {
 });
 
 // ✅ Get data from Blynk
-app.get("/blynk/get/:pin", async (req, res) => {
-  const pin = req.params.pin;
+// index.js
+app.get("/blynk/get", async (req, res) => {
+  const pin = req.query.pin; // example: ?pin=1
   try {
     const response = await axios.get(
       `https://blynk.cloud/external/api/get?token=${BLYNK_TOKEN}&V${pin}`
     );
     res.json({ pin: `V${pin}`, value: response.data });
   } catch (error) {
-    console.error("Blynk API Error:", error.response?.data || error.message);
-    res.status(500).json({ 
-      error: "Failed to get data from Blynk",
-      details: error.response?.data || error.message 
-    });
+    res.status(500).json({ error: "Failed to get data from Blynk" });
   }
 });
+
 
 
 // ✅ Set data in Blynk
