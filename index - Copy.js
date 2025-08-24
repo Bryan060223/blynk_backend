@@ -2,11 +2,11 @@ import express from "express";
 import axios from "axios";
 
 const app = express();
-const PORT = process.env.PORT || 3000;  // Railway port
+const PORT = process.env.PORT || 3000;  // ✅ use Railway's port
 
-// Railway environment variable for Blynk token
+// Use Railway environment variable instead of hardcoding the token
 const BLYNK_TOKEN = process.env.BLYNK_TOKEN;
-console.log("Loaded Blynk token:", BLYNK_TOKEN); // debug
+console.log("Loaded token:", BLYNK_TOKEN); // debug line
 
 // Middleware
 app.use(express.json());
@@ -30,13 +30,16 @@ app.get("/blynk/get/:pin", async (req, res) => {
     );
     res.json({ pin: `V${pin}`, value: response.data });
   } catch (error) {
-    console.error("Blynk API GET Error:", error.response?.data || error.message);
+    console.error("Blynk API Error:", error.response?.data || error.message);
     res.status(500).json({ 
       error: "Failed to get data from Blynk",
       details: error.response?.data || error.message 
     });
   }
 });
+
+
+
 
 // ✅ Set data in Blynk
 app.post("/blynk/set/:pin", async (req, res) => {
@@ -48,29 +51,7 @@ app.post("/blynk/set/:pin", async (req, res) => {
     );
     res.json({ pin: `V${pin}`, value: value, status: "updated" });
   } catch (error) {
-    console.error("Blynk API SET Error:", error.response?.data || error.message);
     res.status(500).json({ error: "Failed to set data in Blynk" });
-  }
-});
-
-// ✅ New endpoint for Glide dropdown: Back Slot selection
-app.post("/slot/select", async (req, res) => {
-  const { slot } = req.body;
-
-  // Validate slot
-  if (typeof slot !== "number" || slot < 0 || slot > 5) {
-    return res.status(400).json({ error: "Invalid slot. Must be 0-5" });
-  }
-
-  try {
-    await axios.get(
-      `https://blynk.cloud/external/api/update?token=${BLYNK_TOKEN}&V0=${slot}`
-    );
-    console.log(`✅ Slot ${slot} sent to Blynk V0`);
-    res.json({ slot, status: "sent to Blynk V0" });
-  } catch (error) {
-    console.error("Blynk API Error:", error.response?.data || error.message);
-    res.status(500).json({ error: "Failed to send slot to Blynk" });
   }
 });
 
